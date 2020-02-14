@@ -5,6 +5,7 @@ from rest_framework_jwt.settings import api_settings
 from rest_framework.response import Response
 
 from .serializers import SignupSerializer, UserSerializer
+from .permissions import IsUserManageAllowed
 
 # Get the JWT settings
 jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
@@ -42,4 +43,4 @@ class SignupView(generics.CreateAPIView):
 class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
     queryset = User.objects.all()
-    permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = [permissions.IsAuthenticated, IsUserManageAllowed]
