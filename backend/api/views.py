@@ -1,10 +1,10 @@
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate
-from rest_framework import generics, status
+from django.contrib.auth import authenticate, login
+from rest_framework import generics, status, viewsets, permissions
 from rest_framework_jwt.settings import api_settings
 from rest_framework.response import Response
 
-from .serializers import SignupSerializer
+from .serializers import SignupSerializer, UserSerializer
 
 # Get the JWT settings
 jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
@@ -20,6 +20,9 @@ class LoginView(generics.CreateAPIView):
         user = authenticate(request, username=username, password=password)
 
         if user is not None:
+            # login to save the user's ID in the session
+            login(request, user)
+
             return Response(data = {
                 "token": jwt_encode_handler(
                     jwt_payload_handler(user)
@@ -35,3 +38,8 @@ class LoginView(generics.CreateAPIView):
 class SignupView(generics.CreateAPIView):
     permission_classes = ()
     serializer_class = SignupSerializer
+
+class UserViewSet(viewsets.ModelViewSet):
+    serializer_class = UserSerializer
+    queryset = User.objects.all()
+    permission_classes = (permissions.IsAuthenticated,)

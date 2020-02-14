@@ -2,6 +2,7 @@ from rest_framework import serializers
 from django.contrib.auth.models import User
 from .models import UserProfile
 
+
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
@@ -31,4 +32,12 @@ class SignupSerializer(serializers.ModelSerializer):
             UserProfile.objects.create(user=user, role=UserProfile.REGULAR_USER)
         else:
             UserProfile.objects.create(user=user, **profile_data)
+
         return user
+
+class UserSerializer(serializers.ModelSerializer):
+    profile = UserProfileSerializer(required=False)
+
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'email', 'profile')
