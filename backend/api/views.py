@@ -4,8 +4,9 @@ from rest_framework import generics, status, viewsets, permissions
 from rest_framework_jwt.settings import api_settings
 from rest_framework.response import Response
 
-from .serializers import SignupSerializer, UserSerializer
+from .serializers import SignupSerializer, UserSerializer, RecordSerializer, RecordWithUserSerializer
 from .permissions import IsUserManageAllowed
+from .models import Record, UserProfile
 
 # Get the JWT settings
 jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
@@ -43,4 +44,35 @@ class SignupView(generics.CreateAPIView):
 class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
     queryset = User.objects.all()
+    permission_classes = [permissions.IsAuthenticated, IsUserManageAllowed]
+
+class RecordViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
+
+    def get_serializer_class(self):
+        if self.request.user.profile.role == UserProfile.ADMINISTRATOR:
+            return RecordWithUserSerializer
+        return RecordSerializer
+
+    def get_queryset(self):
+        qs = Record.objects.all()
+        if self.request.user.profile.role < UserProfile.ADMINISTRATOR:
+            qs = qs.filter(user=self.request.user)
+
+        destination = self.request.query_params.get('destination', None)
+        if destination is not None:
+            qs = qs.filter(destination=destination)
+        from_date = self.request.query_params.get('from_date', None)
+        if from_date is not None:
+            qs = qs.filter(start_date__gte=from_date)
+        to_date = self.request.query_params.get('to_date', None)
+        if to_date is not None:
+            qs = qs.filter(start_date__lte=to_date)
+
+        return qs
+
+    def perform_create(self, serializer):
+        record = serializer.save()
+        record.user = self.request.user
+        record.save()
+

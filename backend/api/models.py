@@ -16,3 +16,10 @@ class UserProfile(models.Model):
         (ADMINISTRATOR, 'Administrator')
     )
     role = models.IntegerField(choices=roles, default=0)
+
+class Record(models.Model):
+    user = models.ForeignKey(User, related_name='record', on_delete=models.CASCADE)
+    destination = models.CharField(max_length=50, null=False, blank=False)
+    start_date = models.DateField(auto_now_add=True)
+    end_date = models.DateField(auto_now_add=True)
+    comment = models.CharField(max_length=300, default='')

@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from .models import UserProfile
+from .models import UserProfile, Record
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
@@ -45,7 +45,7 @@ class UserSerializer(serializers.ModelSerializer):
         return parsed_data
 
     def create(self, validated_data):
-        role = validated_data.pop('role', None)
+        role = validated_data.pop('role', UserProfile.REGULAR_USER)
         user = User.objects.create(**validated_data)
 
         if role is not None:
@@ -63,3 +63,15 @@ class UserSerializer(serializers.ModelSerializer):
             instance.profile.save()
 
         return instance
+
+class RecordSerializer(serializers.ModelSerializer):
+    user = UserSerializer(required=False)
+
+    class Meta:
+        model = Record
+        fields = ['id', 'destination', 'start_date', 'end_date', 'comment', 'user']
+
+class RecordWithUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Record
+        fields = ['id', 'destination', 'start_date', 'end_date', 'comment']
