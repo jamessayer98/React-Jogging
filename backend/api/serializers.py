@@ -13,14 +13,10 @@ class SignupSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'email', 'password', 'profile')
+        fields = ['id', 'username', 'email', 'password', 'profile']
         extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, validated_data):
-        profile_data = None
-        if validated_data.get('profile') is not None:
-            profile_data = validated_data.pop('profile')
-
         user = User(
             email = validated_data['email'],
             username = validated_data['username']
@@ -28,10 +24,7 @@ class SignupSerializer(serializers.ModelSerializer):
         user.set_password(validated_data['password'])
         user.save()
 
-        if profile_data is None:
-            UserProfile.objects.create(user=user, role=UserProfile.REGULAR_USER)
-        else:
-            UserProfile.objects.create(user=user, **profile_data)
+        UserProfile.objects.create(user=user, role=UserProfile.REGULAR_USER)
 
         return user
 
@@ -40,4 +33,33 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'email', 'profile')
+        fields = ['id', 'username', 'email', 'profile']
+
+    def to_internal_value(self, data):
+        role = data.get('role', None)
+        parsed_data = super().to_internal_value(data)
+
+        if role is not None:
+            parsed_data['role'] = int(role)
+
+        return parsed_data
+
+    def create(self, validated_data):
+        role = validated_data.pop('role', None)
+        user = User.objects.create(**validated_data)
+
+        if role is not None:
+            UserProfile.objects.create(user=user, role=role)
+        
+        return user
+
+    def update(self, instance, validated_data):
+        instance.username = validated_data.get('username', instance.username)
+        instance.email = validated_data.get('email', instance.email)
+        instance.save()
+
+        if validated_data.get('role') is not None:
+            instance.profile.role = validated_data['role']
+            instance.profile.save()
+
+        return instance

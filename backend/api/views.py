@@ -37,10 +37,10 @@ class LoginView(generics.CreateAPIView):
         return Response(status=status.HTTP_401_UNAUTHORIZED)
 
 class SignupView(generics.CreateAPIView):
-    permission_classes = ()
+    permission_classes = [permissions.AllowAny]
     serializer_class = SignupSerializer
 
 class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
     queryset = User.objects.all()
-    permission_classes = [permissions.IsAuthenticated, IsUserManageAllowed]
+    permission_classes = [permissions.IsAuthenticated]
