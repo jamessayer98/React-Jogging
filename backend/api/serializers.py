@@ -65,13 +65,13 @@ class UserSerializer(serializers.ModelSerializer):
         return instance
 
 class RecordSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Record
+        fields = ['id', 'destination', 'start_date', 'end_date', 'comment']
+
+class RecordWithUserSerializer(serializers.ModelSerializer):
     user = UserSerializer(required=False)
 
     class Meta:
         model = Record
         fields = ['id', 'destination', 'start_date', 'end_date', 'comment', 'user']
-
-class RecordWithUserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Record
-        fields = ['id', 'destination', 'start_date', 'end_date', 'comment']

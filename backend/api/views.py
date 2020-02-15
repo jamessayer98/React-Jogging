@@ -3,6 +3,8 @@ from django.contrib.auth import authenticate, login
 from rest_framework import generics, status, viewsets, permissions
 from rest_framework_jwt.settings import api_settings
 from rest_framework.response import Response
+from rest_framework.decorators import api_view, permission_classes
+from datetime import datetime
 
 from .serializers import SignupSerializer, UserSerializer, RecordSerializer, RecordWithUserSerializer
 from .permissions import IsUserManageAllowed
@@ -76,3 +78,15 @@ class RecordViewSet(viewsets.ModelViewSet):
         record.user = self.request.user
         record.save()
 
+@api_view(['GET'])
+@permission_classes([permissions.IsAuthenticated])
+def NextMonthPlan(request):
+    qs = Record.objects.all()
+    if request.user.profile.role < UserProfile.ADMINISTRATOR:
+        qs = qs.filter(user=request.user)
+
+    now = datetime.now()
+    records = qs.filter(start_date__month=now.month).all()
+    serializer = RecordSerializer(records, many=True)
+
+    return Response(serializer.data)
