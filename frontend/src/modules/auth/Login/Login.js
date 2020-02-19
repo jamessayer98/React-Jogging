@@ -1,4 +1,6 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { useForm, Controller, ErrorMessage } from 'react-hook-form';
 import {
   Container,
   Typography,
@@ -11,6 +13,8 @@ import {
   Checkbox,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+
+import { AuthActions } from '../../../store/actions';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -28,8 +32,14 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const Login = () => {
+const Login = (props) => {
   const classes = useStyles();
+  const { control, handleSubmit, errors } = useForm();
+  const { login } = props;
+
+  const onSubmit = (data) => {
+    login(data);
+  };
 
   return (
     <>
@@ -39,32 +49,56 @@ const Login = () => {
           <Typography component="h1" variant="h5">
             Log in
           </Typography>
-          <form className={classes.form} noValidate>
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              id="username"
-              label="Username"
+          <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
+            <Controller
+              as={
+                <TextField
+                  variant="outlined"
+                  margin="normal"
+                  fullWidth
+                  label="Username"
+                  autoComplete="username"
+                  autoFocus
+                />
+              }
               name="username"
-              autoComplete="username"
-              autoFocus
+              control={control}
+              rules={{
+                required: 'Username is required',
+              }}
+              defaultValue=""
             />
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
+            <ErrorMessage as={<Typography color="error" />} errors={errors} name="username" />
+            <Controller
+              as={
+                <TextField
+                  variant="outlined"
+                  margin="normal"
+                  fullWidth
+                  label="Password"
+                  type="password"
+                  autoComplete="current-password"
+                />
+              }
               name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
+              control={control}
+              rules={{
+                required: 'Password is required',
+              }}
+              defaultValue=""
             />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
+            <ErrorMessage as={<Typography color="error" />} errors={errors} name="password" />
+            <Controller
+              as={
+                <FormControlLabel
+                  control={<Checkbox value="remember" color="primary" />}
+                  label="Remember me"
+                />
+              }
+              name="remember"
+              type="checkbox"
+              control={control}
+              defaultValue={false}
             />
             <Button
               type="submit"
@@ -89,4 +123,8 @@ const Login = () => {
   )
 };
 
-export default Login;
+const mapDispatchToProps = {
+  login: AuthActions.login,
+};
+
+export default connect(null, mapDispatchToProps)(Login);

@@ -9,15 +9,26 @@ export function* doLogin(action) {
       username: action.username,
       password: action.password
     });
+
+    const { token } = response.data;
+    const userInfo = {
+      username: response.data.username,
+      email: response.data.email,
+      role: response.data.role,
+    }
+
+    if (action.remember) {
+      localStorage.setItem('travel_auth', JSON.stringify({
+        token,
+        info: userInfo,
+      }))
+    }
+
     yield put({
       type: requestSuccess(ActionTypes.AUTH_LOGIN),
       payload: {
-        token: response.data.token,
-        me: {
-          username: response.data.username,
-          email: response.data.email,
-          role: response.data.role,
-        },
+        token,
+        me: userInfo,
       },
     });
   } catch (err) {
