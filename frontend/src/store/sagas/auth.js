@@ -5,7 +5,7 @@ import { request, requestSuccess, requestFail} from '../../helpers/request';
 
 export function* doLogin(action) {
   try {
-    const response = yield call(request, 'auth/login', 'post', {
+    const response = yield call(request, 'login/', 'post', {
       username: action.username,
       password: action.password
     });
