@@ -11,22 +11,21 @@ const routes = (props) => {
 
   return (
     <>
-      <BrowserRouter>
-        <Switch>
-          <Route exact path={Routes.ROOT} render={() => {
-            if (isLoggedIn) return <Redirect to={Routes.DASHBOARD} />;
-            return <Redirect to={Routes.LOGIN} />;
-          }} />
-          <Route path={Routes.LOGIN} component={Login} />
-          <Route path={Routes.SIGNUP} component={Signup} />
-        </Switch>
-      </BrowserRouter>
+      <Switch>
+        <Route exact path={Routes.ROOT} render={() => {
+          if (isLoggedIn) return <Redirect to={Routes.DASHBOARD} />;
+          return <Redirect to={Routes.LOGIN} />;
+        }} />
+        <Route path={Routes.LOGIN} component={Login} />
+        <Route path={Routes.SIGNUP} component={Signup} />
+        <Route path={Routes.DASHBOARD} component={() => (<h1>Dashboard</h1>)} />
+      </Switch>
     </>
   );
 };
 
 const mapStateToProps = (state) => ({
-  isLoggedIn: !!state.auth.me,
+  isLoggedIn: !!state.getIn(['auth', 'me']),
 });
 
 export default connect(mapStateToProps, null)(routes);

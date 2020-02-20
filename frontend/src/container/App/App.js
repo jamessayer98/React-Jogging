@@ -1,17 +1,14 @@
 import React from 'react';
-import { Provider } from 'react-redux';
+import { ConnectedRouter } from 'connected-react-router/immutable';
 
-import configureStore from '../../store';
 import Routes from '../../modules/routes';
 
-const store = configureStore();
-
-const App = () => {
+const App = ({ history }) => {
   return (
     <>
-      <Provider store={store}>
+      <ConnectedRouter history={history}>
         <Routes />
-      </Provider>
+      </ConnectedRouter>
     </>
   )
 };

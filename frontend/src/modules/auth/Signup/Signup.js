@@ -43,7 +43,6 @@ const Signup = (props) => {
   const { signup, authStatus } = props;
 
   const onSubmit = (data) => {
-    console.log('signup: ', signup, data);
     signup(data);
   }
 
@@ -169,7 +168,7 @@ const Signup = (props) => {
 };
 
 const mapStateToProps = (state) => ({
-  authStatus: state.auth.status,
+  authStatus: state.getIn(['auth', 'status']),
 });
 
 const mapDispatchToProps = {

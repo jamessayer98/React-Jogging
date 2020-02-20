@@ -130,7 +130,7 @@ const Login = (props) => {
 };
 
 const mapStateToProps = (state) => ({
-  authStatus: state.auth.status,
+  authStatus: state.getIn(['auth', 'status']),
 });
 
 const mapDispatchToProps = {

@@ -1,15 +1,16 @@
 import { applyMiddleware, createStore, compose } from 'redux';
-import { routerMiddleware } from 'react-router-redux';
 import { createBrowserHistory } from 'history';
 import createSagaMiddleware from 'redux-saga';
+import { routerMiddleware } from 'connected-react-router/immutable';
+import Immutable from 'immutable';
 
-import rootReducer from './reducers';
+import createRootReducer from './reducers';
 import sagas from './sagas';
 
 export const history = createBrowserHistory();
 
 export default () => {
-  const initialState = {};
+  const initialState = Immutable.Map();
   const sagaMiddleware = createSagaMiddleware();
   const middlewares = [
     sagaMiddleware,
@@ -30,7 +31,7 @@ export default () => {
       : compose;
 
   const store = createStore(
-    rootReducer,
+    createRootReducer(history),
     initialState,
     composeEnhancers(...enhancers)
   );

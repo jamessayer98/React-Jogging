@@ -1,6 +1,8 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
+import { push } from 'connected-react-router';
+import { fromJS } from 'immutable';
 
-import { ActionTypes } from '../../constants';
+import { ActionTypes, RouteURLs } from '../../constants';
 import { request, requestSuccess, requestFail} from '../../helpers/request';
 
 export function* doLogin(action) {
@@ -28,9 +30,10 @@ export function* doLogin(action) {
       type: requestSuccess(ActionTypes.AUTH_LOGIN),
       payload: {
         token,
-        me: userInfo,
+        info: fromJS(userInfo),
       },
     });
+    yield put(push(RouteURLs.DASHBOARD));
   } catch (err) {
     yield put({
       type: requestFail(ActionTypes.AUTH_LOGIN),
@@ -50,6 +53,7 @@ export function* doSignup(action) {
     yield put({
       type: requestSuccess(ActionTypes.AUTH_SIGNUP),
     });
+    yield put(push(RouteURLs.LOGIN));
   } catch (err) {
     yield put({
       type: requestFail(ActionTypes.AUTH_SIGNUP),
