@@ -10,7 +10,12 @@ import {
   Button,
   Link,
 } from '@material-ui/core';
+import { Alert } from '@material-ui/lab';
 import { makeStyles } from '@material-ui/core/styles';
+
+import { AuthActions } from '../../../store/actions';
+import { requestFail } from '../../../helpers/request';
+import { ActionTypes } from '../../../constants';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -32,13 +37,14 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const Signup = () => {
+const Signup = (props) => {
   const classes = useStyles();
   const { control, handleSubmit, watch, errors } = useForm();
+  const { signup, authStatus } = props;
 
   const onSubmit = (data) => {
-    console.log(data);
-    // signup(data);
+    console.log('signup: ', signup, data);
+    signup(data);
   }
 
   return (
@@ -49,6 +55,9 @@ const Signup = () => {
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>
+          {authStatus === requestFail(ActionTypes.AUTH_SIGNUP) && (
+            <Alert color="error">Create an account failed!</Alert>
+          )}
           <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
             <Grid container spacing={1}>
               <Grid item xs={12} sm={6}>
@@ -159,4 +168,12 @@ const Signup = () => {
   )
 };
 
-export default Signup;
+const mapStateToProps = (state) => ({
+  authStatus: state.auth.status,
+});
+
+const mapDispatchToProps = {
+  signup: AuthActions.signup,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Signup);

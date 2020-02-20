@@ -36,6 +36,17 @@ export default (state = initialState, action) => {
         status: requestFail(ActionTypes.AUTH_LOGIN),
         error: action.payload,
       };
+    case requestSuccess(ActionTypes.AUTH_SIGNUP):
+      return {
+        ...state,
+        status: requestSuccess(ActionTypes.AUTH_SIGNUP),
+      };
+    case requestFail(ActionTypes.AUTH_SIGNUP):
+      return {
+        ...state,
+        status: requestFail(ActionTypes.AUTH_SIGNUP),
+        error: action.payload,
+      };
     default:
       return state;
   }

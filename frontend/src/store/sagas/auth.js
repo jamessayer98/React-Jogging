@@ -39,6 +39,26 @@ export function* doLogin(action) {
   }
 };
 
+export function* doSignup(action) {
+  try {
+    yield call(request, 'signup/', 'post', {
+      username: action.username,
+      email: action.email,
+      password: action.password
+    });
+
+    yield put({
+      type: requestSuccess(ActionTypes.AUTH_SIGNUP),
+    });
+  } catch (err) {
+    yield put({
+      type: requestFail(ActionTypes.AUTH_SIGNUP),
+      payload: err,
+    });    
+  }
+}
+
 export default function* authSaga() {
   yield takeLatest(ActionTypes.AUTH_LOGIN, doLogin);
+  yield takeLatest(ActionTypes.AUTH_SIGNUP, doSignup);
 };
