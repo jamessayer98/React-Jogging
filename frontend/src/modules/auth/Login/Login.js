@@ -115,9 +115,9 @@ const Login = (props) => {
             >
               Log In
             </Button>
-            <Grid container>
-              <Grid item xs offset={6}>
-                <Link href="#" variant="body2">
+            <Grid container justify="flex-end">
+              <Grid item>
+                <Link href="/signup" variant="body2">
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>

@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 
 import { RouteURLs as Routes } from '../../constants';
 import Login from '../auth/Login';
+import Signup from '../auth/Signup';
 
 const routes = (props) => {
   const { isLoggedIn } = props;
@@ -17,6 +18,7 @@ const routes = (props) => {
             return <Redirect to={Routes.LOGIN} />;
           }} />
           <Route path={Routes.LOGIN} component={Login} />
+          <Route path={Routes.SIGNUP} component={Signup} />
         </Switch>
       </BrowserRouter>
     </>
