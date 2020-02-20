@@ -1,10 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 
 import { RouteURLs as Routes } from '../../constants';
 import Login from '../auth/Login';
 import Signup from '../auth/Signup';
+import Header from '../../container/Header';
+import Record from '../record/RecordList';
 
 const routes = (props) => {
   const { isLoggedIn } = props;
@@ -18,7 +20,13 @@ const routes = (props) => {
         }} />
         <Route path={Routes.LOGIN} component={Login} />
         <Route path={Routes.SIGNUP} component={Signup} />
-        <Route path={Routes.DASHBOARD} component={() => (<h1>Dashboard</h1>)} />
+        <>
+          <Header />
+          <Switch>
+            <Route path={Routes.DASHBOARD} component={() => <h1>Dashboard</h1>} />
+            <Route path={Routes.PLANS} component={Record} />
+          </Switch>
+        </>
       </Switch>
     </>
   );

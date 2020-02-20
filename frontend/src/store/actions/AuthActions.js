@@ -13,3 +13,11 @@ export const signup = (credentials) => {
     ...credentials,
   };
 };
+
+export const logout = () => {
+  localStorage.removeItem('travel_auth');
+
+  return {
+    type: ActionTypes.AUTH_LOGOUT,
+  };
+};
