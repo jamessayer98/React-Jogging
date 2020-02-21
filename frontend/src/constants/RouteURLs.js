@@ -5,4 +5,6 @@ export default {
   DASHBOARD: '/dashboard',
   PLANS: '/plans',
   USERS: '/users',
+  ADD_PLAN: '/plan',
+  EDIT_PLAN: '/plan/:id',
 };

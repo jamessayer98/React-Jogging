@@ -20,6 +20,6 @@ class UserProfile(models.Model):
 class Record(models.Model):
     user = models.ForeignKey(User, related_name='record', on_delete=models.CASCADE)
     destination = models.CharField(max_length=50, null=False, blank=False)
-    start_date = models.DateField(auto_now_add=True)
-    end_date = models.DateField(auto_now_add=True)
+    start_date = models.DateField(default=timezone.now)
+    end_date = models.DateField(default=timezone.now)
     comment = models.CharField(max_length=300, default='')

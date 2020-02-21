@@ -23,7 +23,7 @@ export function* doLogin(action) {
       localStorage.setItem('travel_auth', JSON.stringify({
         token,
         info: userInfo,
-      }))
+      }));
     }
 
     yield put({

@@ -52,9 +52,7 @@ class RecordViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
     def get_serializer_class(self):
-        if self.request.user.profile.role == UserProfile.ADMINISTRATOR:
-            return RecordWithUserSerializer
-        return RecordSerializer
+        return RecordWithUserSerializer
 
     def get_queryset(self):
         qs = Record.objects.all()
@@ -74,8 +72,7 @@ class RecordViewSet(viewsets.ModelViewSet):
         return qs
 
     def perform_create(self, serializer):
-        record = serializer.save()
-        record.user = self.request.user
+        record = serializer.save(user=self.request.user)
         record.save()
 
 @api_view(['GET'])

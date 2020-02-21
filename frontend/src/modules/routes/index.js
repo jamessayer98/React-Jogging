@@ -6,7 +6,8 @@ import { RouteURLs as Routes } from '../../constants';
 import Login from '../auth/Login';
 import Signup from '../auth/Signup';
 import Header from '../../container/Header';
-import Record from '../record/RecordList';
+import PlansList from '../record/PlansList';
+import PlanEdit from '../record/PlanEdit'
 
 const routes = (props) => {
   const { isLoggedIn } = props;
@@ -24,7 +25,9 @@ const routes = (props) => {
           <Header />
           <Switch>
             <Route path={Routes.DASHBOARD} component={() => <h1>Dashboard</h1>} />
-            <Route path={Routes.PLANS} component={Record} />
+            <Route path={Routes.PLANS} component={PlansList} />
+            <Route path={Routes.ADD_PLAN} exact component={PlanEdit} />
+            <Route path={Routes.EDIT_PLAN} component={PlanEdit} />
           </Switch>
         </>
       </Switch>
