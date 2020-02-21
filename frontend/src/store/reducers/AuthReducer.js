@@ -22,7 +22,6 @@ const getInitialState = () => {
 const initialState = fromJS(getInitialState());
 
 export default (state = initialState, action) => {
-  console.log('reducer', action);
   switch (action.type) {
     case requestSuccess(ActionTypes.AUTH_LOGIN):
       return state.merge({

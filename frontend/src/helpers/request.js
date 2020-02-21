@@ -4,6 +4,8 @@ export const requestSuccess = (type) => `success/${type}`;
 
 export const requestFail = (type) => `fail/${type}`;
 
+export const requestPending = (type) => `pending/${type}`;
+
 const defaultHeaders = (includeToken) => {
   const authRestore = localStorage.getItem('travel_auth');
   let headers = {
@@ -21,7 +23,7 @@ const defaultHeaders = (includeToken) => {
   return headers;
 }
 
-export const request = (url, method = 'GET', body = null, includeToken = false) => {
+export const request = (url, method = 'GET', body = null, includeToken = true) => {
   const headers = defaultHeaders(includeToken);
 
   return axios.request({

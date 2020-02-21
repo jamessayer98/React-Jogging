@@ -10,7 +10,7 @@ export function* doLogin(action) {
     const response = yield call(request, 'login/', 'post', {
       username: action.username,
       password: action.password
-    });
+    }, false);
 
     const { token } = response.data;
     const userInfo = {
@@ -48,7 +48,7 @@ export function* doSignup(action) {
       username: action.username,
       email: action.email,
       password: action.password
-    });
+    }, false);
 
     yield put({
       type: requestSuccess(ActionTypes.AUTH_SIGNUP),
