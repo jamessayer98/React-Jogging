@@ -96,10 +96,10 @@ export function* doDeletePlan(action) {
       type: requestPending(ActionTypes.DELETE_PLAN),
     });
 
-    const response = yield call(request, `record/${action.id}/`, 'delete');
+    yield call(request, `record/${action.id}/`, 'delete');
     yield put({
       type: requestSuccess(ActionTypes.DELETE_PLAN),
-      payload: fromJS(response.data),      
+      payload: action.id,
     });
   } catch (err) {
     yield put({

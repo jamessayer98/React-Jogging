@@ -80,12 +80,16 @@ export default (state = initialState, action) => {
         status: requestPending(ActionTypes.UPDATE_PLAN),
       });
 
-    case requestSuccess(ActionTypes.DELETE_PLAN):
+    case requestSuccess(ActionTypes.DELETE_PLAN): {
+      const filteredPlans = state.getIn(['plans'])
+        .filter(plan => plan.get('id') !== action.payload);
+
       return state.merge({
-        plan: action.payload,
+        plans: filteredPlans,
         status: requestSuccess(ActionTypes.DELETE_PLAN),
         error: null,
       });
+    }
     case requestFail(ActionTypes.DELETE_PLAN):
       return state.merge({
         plan: {},

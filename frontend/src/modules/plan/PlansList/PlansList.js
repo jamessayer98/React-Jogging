@@ -18,6 +18,7 @@ import {
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { makeStyles } from '@material-ui/core/styles';
+import moment from 'moment';
 
 import { PlanActions } from '../../../store/actions';
 import { requestPending } from '../../../helpers/request';
@@ -36,7 +37,7 @@ const useStyles = makeStyles(theme => ({
 
 const PlansList = (props) => {
   const classes = useStyles();
-  const { planStatus, plans, history, getPlans } = props;
+  const { planStatus, plans, history, getPlans, deletePlan } = props;
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [page, setPage] = useState(0);
@@ -54,6 +55,7 @@ const PlansList = (props) => {
   };
 
   const handleDeletePlan = (id) => {
+    deletePlan(id);
   };
 
   const handleChangePage = (event, newPage) => {
@@ -64,6 +66,13 @@ const PlansList = (props) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
+
+  const renderDayDiff = (date) => {
+    if (moment(date).isAfter(new Date())) {
+      return `${moment(date).fromNow(true)} later`;
+    }
+    return '';
+  } 
 
   return planStatus !== requestPending(ActionTypes.GET_PLANS) ? (
     <>
@@ -80,6 +89,7 @@ const PlansList = (props) => {
                     <TableCell>Start date</TableCell>
                     <TableCell>End date</TableCell>
                     <TableCell>Comment</TableCell>
+                    <TableCell>From now</TableCell>
                     <TableCell>Actions</TableCell>
                   </TableRow>
                 </TableHead>
@@ -97,6 +107,7 @@ const PlansList = (props) => {
                           <TableCell>{rawData.start_date}</TableCell>
                           <TableCell>{rawData.end_date}</TableCell>
                           <TableCell>{rawData.comment}</TableCell>
+                          <TableCell>{renderDayDiff(rawData.start_date)}</TableCell>
                           <TableCell>
                             <IconButton aria-label="edit plan" onClick={() => handleEditPlan(rawData.id)}>
                               <EditIcon />
@@ -140,6 +151,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   getPlans: PlanActions.getPlans,
+  deletePlan: PlanActions.deletePlan,
 };
 
 export default compose(

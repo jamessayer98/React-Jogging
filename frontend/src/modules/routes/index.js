@@ -6,8 +6,8 @@ import { RouteURLs as Routes } from '../../constants';
 import Login from '../auth/Login';
 import Signup from '../auth/Signup';
 import Header from '../../container/Header';
-import PlansList from '../record/PlansList';
-import PlanEdit from '../record/PlanEdit'
+import PlansList from '../plan/PlansList';
+import PlanEdit from '../plan/PlanEdit'
 
 const routes = (props) => {
   const { isLoggedIn } = props;
