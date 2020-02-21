@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import {
   Container,
@@ -9,6 +9,7 @@ import {
   TableBody,
   TableRow,
   TableCell,
+  TablePagination,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -28,9 +29,21 @@ const RecordList = (props) => {
   const classes = useStyles();
   const { planStatus, plans, getPlans } = props;
 
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [page, setPage] = useState(0);
+
   useEffect(() => {
     getPlans();
-  }, [])
+  }, []);
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = event => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
 
   return planStatus !== requestPending(ActionTypes.GET_PLANS) ? (
     <>
@@ -48,22 +61,34 @@ const RecordList = (props) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {plans.map((plan, index) => {
-                const rawPlan = plan.toJS();
-                return (
-                  <TableRow key={rawPlan.id}>
-                    <TableCell component="th" scope="row">
-                      {index}
-                    </TableCell>
-                    <TableCell>{rawPlan.destination}</TableCell>
-                    <TableCell>{rawPlan.start_date}</TableCell>
-                    <TableCell>{rawPlan.end_date}</TableCell>
-                    <TableCell>{rawPlan.comment}</TableCell>
-                  </TableRow>
-                )
+              {plans
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((plan, index) => {
+                  const rawPlan = plan.toJS();
+                  return (
+                    <TableRow key={rawPlan.id}>
+                      <TableCell component="th" scope="row">
+                        {index}
+                      </TableCell>
+                      <TableCell>{rawPlan.destination}</TableCell>
+                      <TableCell>{rawPlan.start_date}</TableCell>
+                      <TableCell>{rawPlan.end_date}</TableCell>
+                      <TableCell>{rawPlan.comment}</TableCell>
+                    </TableRow>
+                  )
               })}
             </TableBody>
           </Table>
+
+          <TablePagination
+            rowsPerPageOptions={[5, 10, 25]}
+            component="div"
+            count={plans.toJS().length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onChangePage={handleChangePage}
+            onChangeRowsPerPage={handleChangeRowsPerPage}
+          />
         </TableContainer>
       </Container>
     </>
