@@ -30,7 +30,7 @@ const useStyles = makeStyles(theme => ({
   },
   select: {
     width: '100%',
-    margin: theme.spacing(2, 0, 3),
+    margin: theme.spacing(2, 0, 1),
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
@@ -49,17 +49,18 @@ const UserEdit = (props) => {
     error,
     match: { params },
   } = props;
-  const { control, handleSubmit, setValue, errors } = useForm();
+  const { control, handleSubmit, setValue, watch, errors } = useForm();
 
   useEffect(() => {
     if (params.id) getUser(params.id);
+    setValue('role', 0);
   }, []);
 
   useEffect(() => {
     if (!user || !user.toJS()) return;
     setValue('username', user.toJS().username);
     setValue('email', user.toJS().email);
-    setValue('role', user.toJS().role);
+    setValue('role', user.toJS().profile.role);
   }, [user]);
 
   const requestIsSucceeded = () => {
@@ -155,6 +156,48 @@ const UserEdit = (props) => {
                   defaultValue=""
                 />
                 <ErrorMessage as={<Typography color="error" />} errors={errors} name="role" />
+              </Grid>
+              <Grid item xs={12}>
+                <Controller
+                  as={
+                    <TextField
+                      variant="outlined"
+                      margin="normal"
+                      fullWidth
+                      label="Password"
+                      type="password"
+                      autoComplete="current-password"
+                    />
+                  }
+                  name="password"
+                  control={control}
+                  rules={{
+                    required: 'Password is required',
+                  }}
+                  defaultValue=""
+                />
+                <ErrorMessage as={<Typography color="error" />} errors={errors} name="password" />
+              </Grid>
+              <Grid item xs={12}>
+                <Controller
+                  as={
+                    <TextField
+                      variant="outlined"
+                      margin="normal"
+                      fullWidth
+                      label="Confirm password"
+                      type="password"
+                      autoComplete="confirm-password"
+                    />
+                  }
+                  name="confirm-password"
+                  control={control}
+                  rules={{
+                    validate: (value) => value === watch('password') || 'The password do not match'
+                  }}
+                  defaultValue=""
+                />
+                <ErrorMessage as={<Typography color="error" />} errors={errors} name="confirm-password" />
               </Grid>
               <Grid container>
                 <Grid item xs>

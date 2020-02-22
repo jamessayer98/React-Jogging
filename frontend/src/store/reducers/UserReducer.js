@@ -15,12 +15,14 @@ export default (state = initialState, action) => {
     case requestSuccess(ActionTypes.GET_USERS):
       return state.merge({
         users: action.payload,
+        user: null,
         status: requestSuccess(ActionTypes.GET_USERS),
         error: null,
       });
     case requestFail(ActionTypes.GET_USERS):
       return state.merge({
         users: [],
+        user: null,
         status: requestFail(ActionTypes.GET_USERS),
         error: action.payload,
       });

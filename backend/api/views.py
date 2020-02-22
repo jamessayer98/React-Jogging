@@ -44,15 +44,24 @@ class SignupView(generics.CreateAPIView):
     serializer_class = SignupSerializer
 
 class UserViewSet(viewsets.ModelViewSet):
-    serializer_class = UserSerializer
     queryset = User.objects.all()
     permission_classes = [permissions.IsAuthenticated, IsUserManageAllowed]
+
+    def get_serializer_class(self):
+        if self.request.method == 'POST':
+            return SignupSerializer
+        return UserSerializer
+
+    def get_queryset(self):
+        return User.objects.filter(profile__role__lte=self.request.user.profile.role)
 
 class RecordViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
     def get_serializer_class(self):
-        return RecordWithUserSerializer
+        if self.request.user.profile.role == UserProfile.ADMINISTRATOR:
+            return RecordWithUserSerializer
+        return RecordSerializer
 
     def get_queryset(self):
         qs = Record.objects.all()

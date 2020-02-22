@@ -24,7 +24,8 @@ class SignupSerializer(serializers.ModelSerializer):
         user.set_password(validated_data['password'])
         user.save()
 
-        UserProfile.objects.create(user=user, role=UserProfile.REGULAR_USER)
+        role = validated_data.get('role', UserProfile.REGULAR_USER)
+        UserProfile.objects.create(user=user, role=role)
 
         return user
 
@@ -33,7 +34,8 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'profile']
+        fields = ['id', 'username', 'email', 'password', 'profile']
+        extra_kwargs = {'password': {'write_only': True}}
 
     def to_internal_value(self, data):
         role = data.get('role', None)
@@ -44,18 +46,11 @@ class UserSerializer(serializers.ModelSerializer):
 
         return parsed_data
 
-    def create(self, validated_data):
-        role = validated_data.pop('role', UserProfile.REGULAR_USER)
-        user = User.objects.create(**validated_data)
-
-        if role is not None:
-            UserProfile.objects.create(user=user, role=role)
-        
-        return user
-
     def update(self, instance, validated_data):
         instance.username = validated_data.get('username', instance.username)
         instance.email = validated_data.get('email', instance.email)
+        if validated_data.get('password') is not None:
+            instance.set_password(validated_data.get('password'))
         instance.save()
 
         if validated_data.get('role') is not None:

@@ -52,6 +52,7 @@ export function *doAddUser(action) {
       username: action.data.username,
       email: action.data.email,
       role: action.data.role,
+      password: action.data.password,
     });
     yield put({
       type: requestSuccess(ActionTypes.ADD_USER),
@@ -75,10 +76,11 @@ export function *doUpdateUser(action) {
       username: action.data.username,
       email: action.data.email,
       role: action.data.role,
+      password: action.data.password,
     });
     yield put({
       type: requestSuccess(ActionTypes.UPDATE_USER),
-      payload: fromJS(response.data),      
+      payload: fromJS(response.data),
     });
   } catch (err) {
     yield put({

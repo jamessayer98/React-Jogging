@@ -16,12 +16,14 @@ export default (state = initialState, action) => {
     case requestSuccess(ActionTypes.GET_PLANS):
       return state.merge({
         plans: action.payload,
+        plan: null,
         status: requestSuccess(ActionTypes.GET_PLANS),
         error: null,
       });
     case requestFail(ActionTypes.GET_PLANS):
       return state.merge({
         plans: [],
+        plan: null,
         status: requestFail(ActionTypes.GET_PLANS),
         error: action.payload,
       });
