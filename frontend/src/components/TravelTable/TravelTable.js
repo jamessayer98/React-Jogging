@@ -18,6 +18,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import moment from 'moment';
 
 import { PlanActions } from '../../store/actions';
+import { isAdmin } from '../../helpers/role';
 
 const useStyles = makeStyles(theme => ({
   noAvailable: {
@@ -27,7 +28,7 @@ const useStyles = makeStyles(theme => ({
 
 const TravelTable = (props) => {
   const classes = useStyles();
-  const { plans, history, deletePlan } = props;
+  const { role, plans, history, deletePlan } = props;
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [page, setPage] = useState(0);
@@ -62,6 +63,9 @@ const TravelTable = (props) => {
         <TableHead>
           <TableRow>
             <TableCell>#</TableCell>
+            {isAdmin(role) && (
+              <TableCell>User name</TableCell>
+            )}
             <TableCell>Destination</TableCell>
             <TableCell>Start date</TableCell>
             <TableCell>End date</TableCell>
@@ -80,6 +84,9 @@ const TravelTable = (props) => {
                   <TableCell component="th" scope="row">
                     {index + 1}
                   </TableCell>
+                  {isAdmin(role) && (
+                    <TableCell>{rawData.user.username}</TableCell>
+                  )}
                   <TableCell>{rawData.destination}</TableCell>
                   <TableCell>{rawData.start_date}</TableCell>
                   <TableCell>{rawData.end_date}</TableCell>
@@ -115,11 +122,15 @@ const TravelTable = (props) => {
   )
 };
 
+const mapStateToProps = (state) => ({
+  role: state.getIn(['auth', 'me', 'role']),
+});
+
 const mapDispatchToProps = {
   deletePlan: PlanActions.deletePlan,
 };
 
 export default compose(
-  connect(null, mapDispatchToProps),
+  connect(mapStateToProps, mapDispatchToProps),
   withRouter,
 )(TravelTable);

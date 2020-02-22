@@ -56,7 +56,7 @@ class RecordViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         qs = Record.objects.all()
-        if self.request.user.profile.role < UserProfile.ADMINISTRATOR:
+        if self.request.user.profile.role != UserProfile.ADMINISTRATOR:
             qs = qs.filter(user=self.request.user)
 
         destination = self.request.query_params.get('destination', None)
@@ -69,7 +69,7 @@ class RecordViewSet(viewsets.ModelViewSet):
         if to_date is not None:
             qs = qs.filter(start_date__lte=to_date)
 
-        return qs
+        return qs.order_by('-start_date')
 
     def perform_create(self, serializer):
         record = serializer.save(user=self.request.user)
@@ -85,9 +85,9 @@ def NextMonthPlan(request):
     now = datetime.now()
     nextmonth = now.replace(month=now.month + 1)
     if now.month == 12:
-        nextmonth = now.replace(year=now.year + 1, month = 1)
+        nextmonth = now.replace(year=now.year + 1, month=1)
  
     records = qs.filter(start_date__year=nextmonth.year, start_date__month=nextmonth.month).all()
-    serializer = RecordSerializer(records, many=True)
+    serializer = RecordWithUserSerializer(records, many=True)
 
     return Response(serializer.data)

@@ -13,8 +13,9 @@ import {
 import LogoutIcon from '@material-ui/icons/ExitToApp';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { RouteURLs, Roles } from '../../constants';
+import { RouteURLs } from '../../constants';
 import { AuthActions } from '../../store/actions';
+import { isUserManageAllowed } from '../../helpers/role';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -36,8 +37,6 @@ const useStyles = makeStyles(theme => ({
 const Header = (props) => {
   const classes = useStyles();
   const { me, history, logout } = props;
-
-  const isUserManageAllowed = me.role >= Roles.MANAGER;
 
   const handleLogout = () => {
     logout();
@@ -68,7 +67,7 @@ const Header = (props) => {
             >
               <Button color="inherit">Travel Plans</Button>
             </NavLink>
-            {isUserManageAllowed && (
+            {isUserManageAllowed(me.toJS().role) && (
               <NavLink
                 className={classes.link}
                 activeClassName={classes.activeLink}
@@ -76,7 +75,7 @@ const Header = (props) => {
                 exact={true}
               >
                 <Button color="inherit">Users</Button>
-              </NavLink>              
+              </NavLink>
             )}
             <IconButton aria-label="logout" color="inherit" onClick={handleLogout}>
               <LogoutIcon />
