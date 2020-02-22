@@ -83,7 +83,11 @@ def NextMonthPlan(request):
         qs = qs.filter(user=request.user)
 
     now = datetime.now()
-    records = qs.filter(start_date__month=now.month).all()
+    nextmonth = now.replace(month=now.month + 1)
+    if now.month == 12:
+        nextmonth = now.replace(year=now.year + 1, month = 1)
+ 
+    records = qs.filter(start_date__year=nextmonth.year, start_date__month=nextmonth.month).all()
     serializer = RecordSerializer(records, many=True)
 
     return Response(serializer.data)

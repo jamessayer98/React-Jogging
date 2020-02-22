@@ -5,6 +5,7 @@ import { ActionTypes } from '../../constants';
 
 const initialState = fromJS({
   plans: [],
+  nextPlans: [],
   plan: null,
   status: 'INIT',
   error: null,
@@ -83,9 +84,12 @@ export default (state = initialState, action) => {
     case requestSuccess(ActionTypes.DELETE_PLAN): {
       const filteredPlans = state.getIn(['plans'])
         .filter(plan => plan.get('id') !== action.payload);
+      const filteredNextPlans = state.getIn(['nextPlans'])
+        .filter(plan => plan.get('id') !== action.payload);
 
       return state.merge({
         plans: filteredPlans,
+        nextPlans: filteredNextPlans,
         status: requestSuccess(ActionTypes.DELETE_PLAN),
         error: null,
       });
@@ -99,6 +103,23 @@ export default (state = initialState, action) => {
     case requestPending(ActionTypes.DELETE_PLAN):
       return state.merge({
         status: requestPending(ActionTypes.DELETE_PLAN),
+      });
+
+    case requestSuccess(ActionTypes.GET_NEXT_PLANS):
+      return state.merge({
+        nextPlans: action.payload,
+        status: requestSuccess(ActionTypes.GET_NEXT_PLANS),
+        error: null,
+      });
+    case requestFail(ActionTypes.GET_NEXT_PLANS):
+      return state.merge({
+        nextPlans: [],
+        status: requestFail(ActionTypes.GET_NEXT_PLANS),
+        error: action.payload,
+      });
+    case requestPending(ActionTypes.GET_NEXT_PLANS):
+      return state.merge({
+        status: requestPending(ActionTypes.GET_NEXT_PLANS),
       });
     default:
       return state;

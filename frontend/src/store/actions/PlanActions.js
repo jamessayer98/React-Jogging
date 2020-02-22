@@ -13,6 +13,12 @@ export const getPlan = (id) => {
   };
 };
 
+export const getNextPlans = () => {
+  return {
+    type: ActionTypes.GET_NEXT_PLANS,
+  };
+};
+
 export const addPlan = (data) => {
   return {
     type: ActionTypes.ADD_PLAN,

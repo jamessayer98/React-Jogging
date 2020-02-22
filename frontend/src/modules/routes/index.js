@@ -6,6 +6,7 @@ import { RouteURLs as Routes } from '../../constants';
 import Login from '../auth/Login';
 import Signup from '../auth/Signup';
 import Header from '../../container/Header';
+import Dashboard from '../dashboard';
 import PlansList from '../plan/PlansList';
 import PlanEdit from '../plan/PlanEdit'
 
@@ -24,7 +25,7 @@ const routes = (props) => {
         <>
           <Header />
           <Switch>
-            <Route path={Routes.DASHBOARD} component={() => <h1>Dashboard</h1>} />
+            <Route path={Routes.DASHBOARD} component={Dashboard} />
             <Route path={Routes.PLANS} component={PlansList} />
             <Route path={Routes.ADD_PLAN} exact component={PlanEdit} />
             <Route path={Routes.EDIT_PLAN} component={PlanEdit} />

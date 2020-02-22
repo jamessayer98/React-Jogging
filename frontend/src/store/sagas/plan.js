@@ -109,10 +109,30 @@ export function* doDeletePlan(action) {
   }
 };
 
+export function* doGetNextPlans() {
+  try {
+    yield put({
+      type: requestPending(ActionTypes.GET_NEXT_PLANS),
+    });
+
+    const response = yield call(request, 'next-month-plan/', 'get');
+    yield put({
+      type: requestSuccess(ActionTypes.GET_NEXT_PLANS),
+      payload: fromJS(response.data),
+    });
+  } catch (err) {
+    yield put({
+      type: requestFail(ActionTypes.GET_NEXT_PLANS),
+      payload: err,
+    });
+  }
+};
+
 export default function* planSaga() {
   yield takeLatest(ActionTypes.GET_PLANS, doGetPlans);
   yield takeLatest(ActionTypes.GET_PLAN, doGetPlan);
   yield takeLatest(ActionTypes.ADD_PLAN, doAddPlan);
   yield takeLatest(ActionTypes.UPDATE_PLAN, doUpdatePlan);
   yield takeLatest(ActionTypes.DELETE_PLAN, doDeletePlan);
+  yield takeLatest(ActionTypes.GET_NEXT_PLANS, doGetNextPlans);
 };
