@@ -9,6 +9,8 @@ import Header from '../../container/Header';
 import Dashboard from '../dashboard';
 import PlansList from '../plan/PlansList';
 import PlanEdit from '../plan/PlanEdit'
+import UsersList from '../user/UsersList';
+import UserEdit from '../user/UserEdit';
 
 const routes = (props) => {
   const { isLoggedIn } = props;
@@ -29,6 +31,9 @@ const routes = (props) => {
             <Route path={Routes.PLANS} component={PlansList} />
             <Route path={Routes.ADD_PLAN} exact component={PlanEdit} />
             <Route path={Routes.EDIT_PLAN} component={PlanEdit} />
+            <Route path={Routes.USERS} component={UsersList} />
+            <Route path={Routes.ADD_USER} exact component={UserEdit} />
+            <Route path={Routes.EDIT_USER} component={UserEdit} />
           </Switch>
         </>
       </Switch>

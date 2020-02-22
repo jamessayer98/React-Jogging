@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react';
+import { compose } from 'redux';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { useForm, Controller, ErrorMessage } from 'react-hook-form';
 import {
   Container,
@@ -44,6 +46,7 @@ const PlanEdit = (props) => {
     plan,
     status,
     error,
+    history,
     match: { params }
   } = props;
   const { control, handleSubmit, setValue, watch, errors } = useForm();
@@ -66,6 +69,10 @@ const PlanEdit = (props) => {
 
   const requestIsFailed = () => {
     return status === requestFail(ActionTypes.ADD_PLAN) || status === requestFail(ActionTypes.UPDATE_PLAN);
+  };
+
+  const handleGoBack = () => {
+    history.goBack();
   };
 
   const onSubmit = (data) => {
@@ -183,7 +190,7 @@ const PlanEdit = (props) => {
               </Grid>
               <Grid container>
                 <Grid item xs>
-                  <Button href={RouteURLs.PLANS} color="primary">
+                  <Button color="primary" onClick={handleGoBack}>
                     Back
                   </Button>
                 </Grid>
@@ -217,4 +224,7 @@ const mapDispatchToProps = {
   updatePlan: PlanActions.updatePlan,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(PlanEdit);
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  withRouter,
+)(PlanEdit);

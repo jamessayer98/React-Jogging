@@ -7,4 +7,6 @@ export default {
   USERS: '/users',
   ADD_PLAN: '/plan',
   EDIT_PLAN: '/plan/:id',
+  ADD_USER: '/user',
+  EDIT_USER: '/user/:id',
 };
