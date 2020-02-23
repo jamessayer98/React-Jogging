@@ -22,7 +22,7 @@ export function* doGetPlans(action) {
   } catch (err) {
     yield put({
       type: requestFail(ActionTypes.GET_PLANS),
-      payload: err,
+      payload: err.response,
     });
   }
 };
@@ -41,7 +41,7 @@ export function *doGetPlan(action) {
   } catch (err) {
     yield put({
       type: requestFail(ActionTypes.GET_PLAN),
-      payload: err,
+      payload: err.response,
     });
   }
 };
@@ -65,7 +65,7 @@ export function *doAddPlan(action) {
   } catch (err) {
     yield put({
       type: requestFail(ActionTypes.ADD_PLAN),
-      payload: err,
+      payload: err.response,
     });
   }
 };
@@ -89,7 +89,7 @@ export function *doUpdatePlan(action) {
   } catch (err) {
     yield put({
       type: requestFail(ActionTypes.UPDATE_PLAN),
-      payload: err,
+      payload: err.response,
     });
   }
 };
@@ -108,7 +108,7 @@ export function* doDeletePlan(action) {
   } catch (err) {
     yield put({
       type: requestFail(ActionTypes.DELETE_PLAN),
-      payload: err,
+      payload: err.response,
     });
   }
 };
@@ -127,7 +127,7 @@ export function* doGetNextPlans() {
   } catch (err) {
     yield put({
       type: requestFail(ActionTypes.GET_NEXT_PLANS),
-      payload: err,
+      payload: err.response,
     });
   }
 };

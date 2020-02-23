@@ -39,7 +39,7 @@ export default (state = initialState, action) => {
       });
     case requestFail(ActionTypes.GET_USER):
       return state.merge({
-        user: {},
+        user: null,
         status: requestFail(ActionTypes.GET_USER),
         error: action.payload,
       });
@@ -56,7 +56,7 @@ export default (state = initialState, action) => {
       });
     case requestFail(ActionTypes.ADD_USER):
       return state.merge({
-        user: {},
+        user: null,
         status: requestFail(ActionTypes.ADD_USER),
         error: action.payload,
       });
@@ -73,7 +73,7 @@ export default (state = initialState, action) => {
       });
     case requestFail(ActionTypes.UPDATE_USER):
       return state.merge({
-        user: {},
+        user: null,
         status: requestFail(ActionTypes.UPDATE_USER),
         error: action.payload,
       });
@@ -94,7 +94,7 @@ export default (state = initialState, action) => {
     }
     case requestFail(ActionTypes.DELETE_USER):
       return state.merge({
-        user: {},
+        user: null,
         status: requestFail(ActionTypes.DELETE_USER),
         error: action.payload,
       });

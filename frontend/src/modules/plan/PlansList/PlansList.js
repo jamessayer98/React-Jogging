@@ -11,6 +11,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import { PlanActions } from '../../../store/actions';
 import { requestPending } from '../../../helpers/request';
+import { isAdmin } from '../../../helpers/role';
 import { ActionTypes, RouteURLs } from '../../../constants';
 import Loading from '../../../components/Loading';
 import TableToolbar from '../../../components/TableToolbar';
@@ -26,7 +27,7 @@ const useStyles = makeStyles(theme => ({
 
 const PlansList = (props) => {
   const classes = useStyles();
-  const { planStatus, plans, filterParams, history, getPlans } = props;
+  const { planStatus, plans, me, filterParams, history, getPlans } = props;
 
   useEffect(() => {
     getPlans();
@@ -68,7 +69,11 @@ const PlansList = (props) => {
     <>
       <Container maxWidth="lg">
         <TableContainer className={classes.root} component={Paper}>
-          <TableToolbar title="Your travel plans" handleAction={handleAddPlan} withAction />
+          <TableToolbar
+            title={isAdmin(me.toJS().role) ? 'All travel plans' : 'Your travel plans'}
+            handleAction={handleAddPlan}
+            withAction
+          />
           <FilterToolbar />
           {planStatus !== requestPending(ActionTypes.GET_PLANS) ? (
             <TravelTable plans={plans} />
@@ -82,6 +87,7 @@ const PlansList = (props) => {
 };
 
 const mapStateToProps = (state) => ({
+  me: state.getIn(['auth', 'me']),
   planStatus: state.getIn(['plan', 'status']),
   plans: state.getIn(['plan', 'plans']),
   filterParams: state.getIn(['plan', 'filterParams']),

@@ -18,7 +18,7 @@ export function* doGetUsers() {
   } catch (err) {
     yield put({
       type: requestFail(ActionTypes.GET_USERS),
-      payload: err,
+      payload: err.response,
     });
   }
 };
@@ -37,7 +37,7 @@ export function *doGetUser(action) {
   } catch (err) {
     yield put({
       type: requestFail(ActionTypes.GET_USER),
-      payload: err,
+      payload: err.response,
     });
   }
 };
@@ -61,7 +61,7 @@ export function *doAddUser(action) {
   } catch (err) {
     yield put({
       type: requestFail(ActionTypes.ADD_USER),
-      payload: err,
+      payload: err.response,
     });
   }
 };
@@ -85,7 +85,7 @@ export function *doUpdateUser(action) {
   } catch (err) {
     yield put({
       type: requestFail(ActionTypes.UPDATE_USER),
-      payload: err,
+      payload: err.response,
     });
   }
 };
@@ -104,12 +104,12 @@ export function* doDeleteUser(action) {
   } catch (err) {
     yield put({
       type: requestFail(ActionTypes.DELETE_USER),
-      payload: err,
+      payload: err.response,
     });
   }
 };
 
-export default function* planSaga() {
+export default function* userSaga() {
   yield takeLatest(ActionTypes.GET_USERS, doGetUsers);
   yield takeLatest(ActionTypes.GET_USER, doGetUser);
   yield takeLatest(ActionTypes.ADD_USER, doAddUser);

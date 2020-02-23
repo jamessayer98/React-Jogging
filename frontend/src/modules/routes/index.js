@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Route, Switch, Redirect } from 'react-router-dom';
 
 import { RouteURLs as Routes } from '../../constants';
+import AdminRoute from './AdminRoute';
 import Login from '../auth/Login';
 import Signup from '../auth/Signup';
 import Header from '../../container/Header';
@@ -24,18 +25,20 @@ const routes = (props) => {
         }} />
         <Route path={Routes.LOGIN} component={Login} />
         <Route path={Routes.SIGNUP} component={Signup} />
-        <>
-          <Header />
-          <Switch>
-            <Route path={Routes.DASHBOARD} component={Dashboard} />
-            <Route path={Routes.PLANS} component={PlansList} />
-            <Route path={Routes.ADD_PLAN} exact component={PlanEdit} />
-            <Route path={Routes.EDIT_PLAN} component={PlanEdit} />
-            <Route path={Routes.USERS} component={UsersList} />
-            <Route path={Routes.ADD_USER} exact component={UserEdit} />
-            <Route path={Routes.EDIT_USER} component={UserEdit} />
-          </Switch>
-        </>
+        {isLoggedIn && (
+          <>
+            <Header />
+            <Switch>
+              <Route path={Routes.DASHBOARD} component={Dashboard} />
+              <Route path={Routes.PLANS} component={PlansList}  />
+              <Route path={Routes.ADD_PLAN} exact component={PlanEdit}  />
+              <Route path={Routes.EDIT_PLAN} component={PlanEdit}  />
+              <AdminRoute path={Routes.USERS} component={UsersList} />
+              <AdminRoute path={Routes.ADD_USER} exact component={UserEdit} />
+              <AdminRoute path={Routes.EDIT_USER} component={UserEdit} />
+            </Switch>
+          </>
+        )}
       </Switch>
     </>
   );

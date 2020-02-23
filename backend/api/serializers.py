@@ -34,8 +34,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'password', 'profile']
-        extra_kwargs = {'password': {'write_only': True}}
+        fields = ['id', 'username', 'email', 'profile']
 
     def to_internal_value(self, data):
         role = data.get('role', None)
@@ -49,8 +48,6 @@ class UserSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         instance.username = validated_data.get('username', instance.username)
         instance.email = validated_data.get('email', instance.email)
-        if validated_data.get('password') is not None:
-            instance.set_password(validated_data.get('password'))
         instance.save()
 
         if validated_data.get('role') is not None:

@@ -9,8 +9,6 @@ import {
   Button,
   Grid,
   Link,
-  FormControlLabel,
-  Checkbox,
 } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import { makeStyles } from '@material-ui/core/styles';
@@ -94,18 +92,6 @@ const Login = (props) => {
               defaultValue=""
             />
             <ErrorMessage as={<Typography color="error" />} errors={errors} name="password" />
-            <Controller
-              as={
-                <FormControlLabel
-                  control={<Checkbox value="remember" color="primary" />}
-                  label="Remember me"
-                />
-              }
-              name="remember"
-              type="checkbox"
-              control={control}
-              defaultValue={false}
-            />
             <Button
               type="submit"
               fullWidth

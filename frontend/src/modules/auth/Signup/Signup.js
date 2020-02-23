@@ -48,7 +48,7 @@ const Signup = (props) => {
 
   return (
     <>
-      <Container component="main" maxWidth="xs">
+      <Container component="main" maxWidth="sm">
         <CssBaseline />
         <div className={classes.paper}>
           <Typography component="h1" variant="h5">
@@ -59,7 +59,7 @@ const Signup = (props) => {
           )}
           <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
             <Grid container spacing={1}>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12}>
                 <Controller
                   as={
                     <TextField
@@ -80,7 +80,7 @@ const Signup = (props) => {
                 />
                 <ErrorMessage as={<Typography color="error" />} errors={errors} name="username" />
               </Grid>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12}>
                 <Controller
                   as={
                     <TextField
@@ -101,7 +101,7 @@ const Signup = (props) => {
                 />
                 <ErrorMessage as={<Typography color="error" />} errors={errors} name="email" />
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={12} sm={6}>
                 <Controller
                   as={
                     <TextField
@@ -122,7 +122,7 @@ const Signup = (props) => {
                 />
                 <ErrorMessage as={<Typography color="error" />} errors={errors} name="password" />
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={12} sm={6}>
                 <Controller
                   as={
                     <TextField

@@ -70,7 +70,7 @@ class RecordViewSet(viewsets.ModelViewSet):
 
         destination = self.request.query_params.get('destination', None)
         if destination is not None:
-            qs = qs.filter(destination=destination)
+            qs = qs.filter(destination__icontains=destination)
         from_date = self.request.query_params.get('fromDate', None)
         if from_date is not None:
             qs = qs.filter(start_date__gte=from_date)

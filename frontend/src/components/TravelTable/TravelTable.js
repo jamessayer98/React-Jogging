@@ -15,6 +15,7 @@ import {
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { makeStyles } from '@material-ui/core/styles';
+import { useConfirm } from "material-ui-confirm";
 import moment from 'moment';
 
 import { PlanActions } from '../../store/actions';
@@ -29,6 +30,7 @@ const useStyles = makeStyles(theme => ({
 const TravelTable = (props) => {
   const classes = useStyles();
   const { role, plans, history, deletePlan } = props;
+  const confirm = useConfirm();
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [page, setPage] = useState(0);
@@ -38,7 +40,11 @@ const TravelTable = (props) => {
   };
 
   const handleDeletePlan = (id) => {
-    deletePlan(id);
+    confirm({
+      description: 'This will be permanently deleted'
+    }).then(() => {
+      deletePlan(id);
+    });      
   };
 
   const handleChangePage = (event, newPage) => {

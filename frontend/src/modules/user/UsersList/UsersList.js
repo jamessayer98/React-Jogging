@@ -17,6 +17,7 @@ import {
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { makeStyles } from '@material-ui/core/styles';
+import { useConfirm } from 'material-ui-confirm';
 
 import { UserActions } from '../../../store/actions';
 import { requestPending } from '../../../helpers/request';
@@ -37,6 +38,7 @@ const useStyles = makeStyles(theme => ({
 const UsersList = (props) => {
   const classes = useStyles();
   const { users, status, history, getUsers, deleteUser } = props;
+  const confirm = useConfirm();
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [page, setPage] = useState(0);
@@ -54,7 +56,11 @@ const UsersList = (props) => {
   };
 
   const handleDeleteUser = (id) => {
-    deleteUser(id);
+    confirm({
+      description: 'This will be permanently deleted'
+    }).then(() => {
+      deleteUser(id);
+    })
   };
 
   const handleChangePage = (event, newPage) => {

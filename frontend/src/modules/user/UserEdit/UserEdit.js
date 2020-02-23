@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import { useForm, Controller, ErrorMessage } from 'react-hook-form';
 import {
   Container,
@@ -47,9 +48,9 @@ const UserEdit = (props) => {
     user,
     status,
     error,
-    match: { params },
   } = props;
   const { control, handleSubmit, setValue, watch, errors } = useForm();
+  const params = useParams();
 
   useEffect(() => {
     if (params.id) getUser(params.id);
@@ -69,6 +70,12 @@ const UserEdit = (props) => {
 
   const requestIsFailed = () => {
     return status === requestFail(ActionTypes.ADD_USER) || status === requestFail(ActionTypes.UPDATE_USER);
+  };
+
+  const getErrorText = () => {
+    return error ? Object.keys(error.data).map((key) => (
+      <div key={key}>{`${key}: ${error.data[key]}`}</div>
+    )) : '';
   };
 
   const onSubmit = (data) => {
@@ -91,7 +98,7 @@ const UserEdit = (props) => {
             )}
             {requestIsFailed() && (
               <Alert color="error">
-                {error}
+                {getErrorText()}
               </Alert>
             )}
             <Grid container spacing={1}>
@@ -157,48 +164,52 @@ const UserEdit = (props) => {
                 />
                 <ErrorMessage as={<Typography color="error" />} errors={errors} name="role" />
               </Grid>
-              <Grid item xs={12}>
-                <Controller
-                  as={
-                    <TextField
-                      variant="outlined"
-                      margin="normal"
-                      fullWidth
-                      label="Password"
-                      type="password"
-                      autoComplete="current-password"
+              {!params.id && (
+                <>
+                  <Grid item xs={12}>
+                    <Controller
+                      as={
+                        <TextField
+                          variant="outlined"
+                          margin="normal"
+                          fullWidth
+                          label="Password"
+                          type="password"
+                          autoComplete="current-password"
+                        />
+                      }
+                      name="password"
+                      control={control}
+                      rules={{
+                        required: 'Password is required',
+                      }}
+                      defaultValue=""
                     />
-                  }
-                  name="password"
-                  control={control}
-                  rules={{
-                    required: 'Password is required',
-                  }}
-                  defaultValue=""
-                />
-                <ErrorMessage as={<Typography color="error" />} errors={errors} name="password" />
-              </Grid>
-              <Grid item xs={12}>
-                <Controller
-                  as={
-                    <TextField
-                      variant="outlined"
-                      margin="normal"
-                      fullWidth
-                      label="Confirm password"
-                      type="password"
-                      autoComplete="confirm-password"
+                    <ErrorMessage as={<Typography color="error" />} errors={errors} name="password" />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Controller
+                      as={
+                        <TextField
+                          variant="outlined"
+                          margin="normal"
+                          fullWidth
+                          label="Confirm password"
+                          type="password"
+                          autoComplete="confirm-password"
+                        />
+                      }
+                      name="confirm-password"
+                      control={control}
+                      rules={{
+                        validate: (value) => value === watch('password') || 'The password do not match'
+                      }}
+                      defaultValue=""
                     />
-                  }
-                  name="confirm-password"
-                  control={control}
-                  rules={{
-                    validate: (value) => value === watch('password') || 'The password do not match'
-                  }}
-                  defaultValue=""
-                />
-                <ErrorMessage as={<Typography color="error" />} errors={errors} name="confirm-password" />
-              </Grid>
+                    <ErrorMessage as={<Typography color="error" />} errors={errors} name="confirm-password" />
+                  </Grid>
+                </>
+              )}
               <Grid container>
                 <Grid item xs>
                   <Button href={RouteURLs.USERS} color="primary">

@@ -71,6 +71,12 @@ const PlanEdit = (props) => {
     return status === requestFail(ActionTypes.ADD_PLAN) || status === requestFail(ActionTypes.UPDATE_PLAN);
   };
 
+  const getErrorText = () => {
+    return error ? Object.keys(error.data).map((key) => (
+      <div key={key}>{`${key}: ${error.data[key]}`}</div>
+    )) : '';
+  };
+
   const handleGoBack = () => {
     history.goBack();
   };
@@ -95,7 +101,7 @@ const PlanEdit = (props) => {
             )}
             {requestIsFailed() && (
               <Alert color="error">
-                {error}
+                {getErrorText()}
               </Alert>
             )}
             <Grid container spacing={1}>

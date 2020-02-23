@@ -19,12 +19,10 @@ export function* doLogin(action) {
       role: response.data.role,
     }
 
-    if (action.remember) {
-      localStorage.setItem('travel_auth', JSON.stringify({
-        token,
-        info: userInfo,
-      }));
-    }
+    localStorage.setItem('travel_auth', JSON.stringify({
+      token,
+      info: userInfo,
+    }));
 
     yield put({
       type: requestSuccess(ActionTypes.AUTH_LOGIN),
@@ -37,7 +35,7 @@ export function* doLogin(action) {
   } catch (err) {
     yield put({
       type: requestFail(ActionTypes.AUTH_LOGIN),
-      payload: err,
+      payload: err.response,
     });
   }
 };
@@ -57,7 +55,7 @@ export function* doSignup(action) {
   } catch (err) {
     yield put({
       type: requestFail(ActionTypes.AUTH_SIGNUP),
-      payload: err,
+      payload: err.response,
     });    
   }
 }

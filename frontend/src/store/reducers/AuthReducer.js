@@ -2,6 +2,7 @@ import { fromJS } from 'immutable';
 
 import { requestSuccess, requestFail } from '../../helpers/request';
 import { ActionTypes } from '../../constants';
+import { AUTH_LOGOUT } from '../../constants/ActionTypes';
 
 const getInitialState = () => {
   const authRestore = JSON.parse(localStorage.getItem('travel_auth') || null);
@@ -45,6 +46,8 @@ export default (state = initialState, action) => {
         status: requestFail(ActionTypes.AUTH_SIGNUP),
         error: action.payload,
       });
+    case ActionTypes.AUTH_LOGOUT:
+      return fromJS(getInitialState());
     default:
       return state;
   }

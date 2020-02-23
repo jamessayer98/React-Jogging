@@ -45,7 +45,7 @@ export default (state = initialState, action) => {
       });
     case requestFail(ActionTypes.GET_PLAN):
       return state.merge({
-        plan: {},
+        plan: null,
         status: requestFail(ActionTypes.GET_PLAN),
         error: action.payload,
       });
@@ -62,7 +62,7 @@ export default (state = initialState, action) => {
       });
     case requestFail(ActionTypes.ADD_PLAN):
       return state.merge({
-        plan: {},
+        plan: null,
         status: requestFail(ActionTypes.ADD_PLAN),
         error: action.payload,
       });
@@ -79,7 +79,7 @@ export default (state = initialState, action) => {
       });
     case requestFail(ActionTypes.UPDATE_PLAN):
       return state.merge({
-        plan: {},
+        plan: null,
         status: requestFail(ActionTypes.UPDATE_PLAN),
         error: action.payload,
       });
@@ -103,7 +103,7 @@ export default (state = initialState, action) => {
     }
     case requestFail(ActionTypes.DELETE_PLAN):
       return state.merge({
-        plan: {},
+        plan: null,
         status: requestFail(ActionTypes.DELETE_PLAN),
         error: action.payload,
       });
