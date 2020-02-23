@@ -22,4 +22,4 @@ class Record(models.Model):
     destination = models.CharField(max_length=50, null=False, blank=False)
     start_date = models.DateField(default=timezone.now)
     end_date = models.DateField(default=timezone.now)
-    comment = models.CharField(max_length=300, default='')
+    comment = models.CharField(max_length=300, default='', blank=True)

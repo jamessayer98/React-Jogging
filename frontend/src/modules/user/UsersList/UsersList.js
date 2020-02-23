@@ -37,7 +37,7 @@ const useStyles = makeStyles(theme => ({
 
 const UsersList = (props) => {
   const classes = useStyles();
-  const { users, status, history, getUsers, deleteUser } = props;
+  const { me, users, status, history, getUsers, deleteUser } = props;
   const confirm = useConfirm();
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -106,9 +106,11 @@ const UsersList = (props) => {
                             <IconButton aria-label="edit plan" onClick={() => handleEditUser(rawData.id)}>
                               <EditIcon />
                             </IconButton>
-                            <IconButton aria-label="delete plan" onClick={() => handleDeleteUser(rawData.id)}>
-                              <DeleteIcon />
-                            </IconButton>
+                            {rawData.username !== me.toJS().username && (
+                              <IconButton aria-label="delete plan" onClick={() => handleDeleteUser(rawData.id)}>
+                                <DeleteIcon />
+                              </IconButton>
+                            )}
                           </TableCell>
                         </TableRow>
                       )
@@ -136,6 +138,7 @@ const UsersList = (props) => {
 };
 
 const mapStateToProps = (state) => ({
+  me: state.getIn(['auth', 'me']),
   users: state.getIn(['user', 'users']),
   status: state.getIn(['users', 'status']),
 });

@@ -16,6 +16,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { AuthActions } from '../../../store/actions';
 import { requestFail } from '../../../helpers/request';
 import { ActionTypes } from '../../../constants';
+import { capitalizeFirstLetter } from '../../../helpers';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -40,7 +41,13 @@ const useStyles = makeStyles(theme => ({
 const Signup = (props) => {
   const classes = useStyles();
   const { control, handleSubmit, watch, errors } = useForm();
-  const { signup, authStatus } = props;
+  const { error, signup, authStatus } = props;
+
+  const getErrorText = () => {
+    return error ? Object.keys(error.data).map((key) => (
+      <div key={key}>{`${capitalizeFirstLetter(key)}: ${error.data[key]}`}</div>
+    )) : '';
+  };
 
   const onSubmit = (data) => {
     signup(data);
@@ -54,10 +61,12 @@ const Signup = (props) => {
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>
-          {authStatus === requestFail(ActionTypes.AUTH_SIGNUP) && (
-            <Alert color="error">Create an account failed!</Alert>
-          )}
           <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
+            {authStatus === requestFail(ActionTypes.AUTH_SIGNUP) && (
+              <Alert color="error">
+                {getErrorText()}
+              </Alert>
+            )}
             <Grid container spacing={1}>
               <Grid item xs={12}>
                 <Controller
@@ -169,6 +178,7 @@ const Signup = (props) => {
 
 const mapStateToProps = (state) => ({
   authStatus: state.getIn(['auth', 'status']),
+  error: state.getIn(['auth', 'error']),
 });
 
 const mapDispatchToProps = {

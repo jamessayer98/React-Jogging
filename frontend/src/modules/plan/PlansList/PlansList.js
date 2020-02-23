@@ -8,9 +8,10 @@ import {
   TableContainer,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import { Alert } from '@material-ui/lab';
 
 import { PlanActions } from '../../../store/actions';
-import { requestPending } from '../../../helpers/request';
+import { requestPending, requestSuccess } from '../../../helpers/request';
 import { isAdmin } from '../../../helpers/role';
 import { ActionTypes, RouteURLs } from '../../../constants';
 import Loading from '../../../components/Loading';
@@ -65,6 +66,12 @@ const PlansList = (props) => {
     history.push(RouteURLs.ADD_PLAN);
   };
 
+  const renderTravelListByStatus = () => {
+    if (planStatus === requestSuccess(ActionTypes.GET_PLANS)) return <TravelTable plans={plans} />;
+    if (planStatus === requestPending(ActionTypes.GET_PLANS)) return <Loading />;
+    return <Alert color="error">Fetch travel plans failed</Alert>;
+  }
+
   return (
     <>
       <Container maxWidth="lg">
@@ -75,11 +82,7 @@ const PlansList = (props) => {
             withAction
           />
           <FilterToolbar />
-          {planStatus !== requestPending(ActionTypes.GET_PLANS) ? (
-            <TravelTable plans={plans} />
-          ) : (
-            <Loading />
-          )}
+          {renderTravelListByStatus()}
         </TableContainer>
       </Container>
     </>

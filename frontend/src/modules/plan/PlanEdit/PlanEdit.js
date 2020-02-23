@@ -16,6 +16,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { ActionTypes } from '../../../constants';
 import { PlanActions } from '../../../store/actions';
 import { requestSuccess, requestFail } from '../../../helpers/request';
+import { capitalizeFirstLetter } from '../../../helpers';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -72,8 +73,9 @@ const PlanEdit = (props) => {
   };
 
   const getErrorText = () => {
+    if (error.status === 401) return 'Error: 401 (Unauthorized)';
     return error ? Object.keys(error.data).map((key) => (
-      <div key={key}>{`${key}: ${error.data[key]}`}</div>
+      <div key={key}>{`${capitalizeFirstLetter(key)}: ${error.data[key]}`}</div>
     )) : '';
   };
 
@@ -187,12 +189,8 @@ const PlanEdit = (props) => {
                   }
                   name="comment"
                   control={control}
-                  rules={{
-                    required: 'Comment is required',
-                  }}
                   defaultValue=""
                 />
-                <ErrorMessage as={<Typography color="error" />} errors={errors} name="comment" />
               </Grid>
               <Grid container>
                 <Grid item xs>

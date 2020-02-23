@@ -17,6 +17,7 @@ import { RouteURLs, ActionTypes, Roles } from '../../../constants';
 import { UserActions } from '../../../store/actions';
 import { requestSuccess, requestFail } from '../../../helpers/request';
 import { getAvailableRoles } from '../../../helpers/role';
+import { capitalizeFirstLetter } from '../../../helpers';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -73,8 +74,9 @@ const UserEdit = (props) => {
   };
 
   const getErrorText = () => {
+    if (error.status === 401) return 'Error: 401 (Unauthorized)';
     return error ? Object.keys(error.data).map((key) => (
-      <div key={key}>{`${key}: ${error.data[key]}`}</div>
+      <div key={key}>{`${capitalizeFirstLetter(key)}: ${error.data[key]}`}</div>
     )) : '';
   };
 
