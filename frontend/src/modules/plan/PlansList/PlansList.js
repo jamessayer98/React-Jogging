@@ -11,7 +11,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Alert } from '@material-ui/lab';
 
 import { PlanActions } from '../../../store/actions';
-import { requestPending, requestSuccess } from '../../../helpers/request';
+import { requestPending, requestSuccess, requestFail } from '../../../helpers/request';
 import { isAdmin } from '../../../helpers/role';
 import { ActionTypes, RouteURLs } from '../../../constants';
 import Loading from '../../../components/Loading';
@@ -33,10 +33,6 @@ const PlansList = (props) => {
   useEffect(() => {
     getPlans();
   }, []);
-
-  // useEffect(() => {
-  //   getPlans(filterParams.toJS());
-  // }, [filterParams]);
   
   // Now we call our hook, passing in the current searchTerm value.
   // The hook will only return the latest value (what we passed in) ...
@@ -67,9 +63,9 @@ const PlansList = (props) => {
   };
 
   const renderTravelListByStatus = () => {
-    if (planStatus === requestSuccess(ActionTypes.GET_PLANS)) return <TravelTable plans={plans} />;
+    if (planStatus === requestFail(ActionTypes.GET_PLANS)) return <Alert color="error">Fetch travel plans failed</Alert>;
     if (planStatus === requestPending(ActionTypes.GET_PLANS)) return <Loading />;
-    return <Alert color="error">Fetch travel plans failed</Alert>;
+    return <TravelTable plans={plans} />;
   }
 
   return (

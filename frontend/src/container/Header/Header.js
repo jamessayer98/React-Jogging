@@ -39,8 +39,8 @@ const Header = (props) => {
   const { me, history, logout } = props;
 
   const handleLogout = () => {
-    logout();
     history.push(RouteURLs.ROOT);
+    logout();
   };
 
   return (
