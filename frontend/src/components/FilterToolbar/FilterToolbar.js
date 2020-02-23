@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const FilterToolbar = (props) => {
+export const FilterToolbar = (props) => {
   const classes = useStyles();
   const { params, setParams } = props;
 

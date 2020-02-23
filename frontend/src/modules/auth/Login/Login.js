@@ -33,7 +33,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const Login = (props) => {
+export const Login = (props) => {
   const classes = useStyles();
   const { control, handleSubmit, errors } = useForm();
   const { login, authStatus } = props;

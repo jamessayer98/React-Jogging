@@ -27,7 +27,7 @@ const useStyles = makeStyles(theme => ({
   },  
 }));
 
-const TravelTable = (props) => {
+export const TravelTable = (props) => {
   const classes = useStyles();
   const { role, plans, history, deletePlan } = props;
   const confirm = useConfirm();
