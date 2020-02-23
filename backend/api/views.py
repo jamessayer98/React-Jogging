@@ -37,7 +37,7 @@ class LoginView(generics.CreateAPIView):
                 "role": user.profile.role
             })
 
-        return Response(status=status.HTTP_401_UNAUTHORIZED)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
 
 class SignupView(generics.CreateAPIView):
     permission_classes = [permissions.AllowAny]
