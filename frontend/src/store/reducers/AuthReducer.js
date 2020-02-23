@@ -2,7 +2,6 @@ import { fromJS } from 'immutable';
 
 import { requestSuccess, requestFail } from '../../helpers/request';
 import { ActionTypes } from '../../constants';
-import { AUTH_LOGOUT } from '../../constants/ActionTypes';
 
 const getInitialState = () => {
   const authRestore = JSON.parse(localStorage.getItem('travel_auth') || null);
