@@ -4,13 +4,17 @@ import { fromJS } from 'immutable';
 import { ActionTypes } from '../../constants';
 import { request, requestSuccess, requestFail, requestPending} from '../../helpers/request';
 
-export function* doGetPlans() {
+export function* doGetPlans(action) {
   try {
     yield put({
       type: requestPending(ActionTypes.GET_PLANS),
     });
 
-    const response = yield call(request, 'record/', 'get');
+    const enhancedParams = {};
+    Object.keys(action.params).forEach(param => {
+      if (!!action.params[param]) enhancedParams[param] = action.params[param];
+    });
+    const response = yield call(request, 'record/', 'get', null, true, enhancedParams);
     yield put({
       type: requestSuccess(ActionTypes.GET_PLANS),
       payload: fromJS(response.data),

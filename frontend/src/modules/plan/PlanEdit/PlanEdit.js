@@ -13,7 +13,7 @@ import {
 import { Alert } from '@material-ui/lab';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { RouteURLs, ActionTypes } from '../../../constants';
+import { ActionTypes } from '../../../constants';
 import { PlanActions } from '../../../store/actions';
 import { requestSuccess, requestFail } from '../../../helpers/request';
 

@@ -23,7 +23,7 @@ const defaultHeaders = (includeToken) => {
   return headers;
 }
 
-export const request = (url, method = 'GET', body = null, includeToken = true) => {
+export const request = (url, method = 'GET', body = null, includeToken = true, params = {}) => {
   const headers = defaultHeaders(includeToken);
 
   return axios.request({
@@ -31,5 +31,6 @@ export const request = (url, method = 'GET', body = null, includeToken = true) =
     url,
     method,
     data: body,
+    params,
   });
 }

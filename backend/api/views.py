@@ -71,10 +71,10 @@ class RecordViewSet(viewsets.ModelViewSet):
         destination = self.request.query_params.get('destination', None)
         if destination is not None:
             qs = qs.filter(destination=destination)
-        from_date = self.request.query_params.get('from_date', None)
+        from_date = self.request.query_params.get('fromDate', None)
         if from_date is not None:
             qs = qs.filter(start_date__gte=from_date)
-        to_date = self.request.query_params.get('to_date', None)
+        to_date = self.request.query_params.get('toDate', None)
         if to_date is not None:
             qs = qs.filter(start_date__lte=to_date)
 

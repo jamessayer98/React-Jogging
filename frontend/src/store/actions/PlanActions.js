@@ -1,8 +1,9 @@
 import { ActionTypes } from '../../constants';
 
-export const getPlans = () => {
+export const getPlans = (params = {}) => {
   return {
     type: ActionTypes.GET_PLANS,
+    params,
   };
 };
 
@@ -38,5 +39,12 @@ export const deletePlan = (id) => {
   return {
     type: ActionTypes.DELETE_PLAN,
     id,
+  };
+};
+
+export const setFilterParams = (params) => {
+  return {
+    type: ActionTypes.SET_FILTER_PARAMS,
+    payload: params,
   };
 };

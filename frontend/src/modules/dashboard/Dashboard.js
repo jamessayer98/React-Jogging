@@ -10,7 +10,10 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import TableToolbar from '../../components/TableToolbar';
 import TravelTable from '../../components/TravelTable';
+import Loading from '../../components/Loading';
 import { PlanActions } from '../../store/actions';
+import { ActionTypes } from '../../constants';
+import { requestPending } from '../../helpers/request';
 
 const useStyles = makeStyles(theme => ({
   header: {
@@ -24,7 +27,7 @@ const useStyles = makeStyles(theme => ({
 
 const Dashboard = (props) => {
   const classes = useStyles();
-  const { nextPlans, getNextPlans } = props;
+  const { status, nextPlans, getNextPlans } = props;
 
   useEffect(() => {
     getNextPlans();
@@ -39,7 +42,11 @@ const Dashboard = (props) => {
 
         <TableContainer className={classes.root} component={Paper}>
           <TableToolbar title="Next month travel plans" />
-          <TravelTable plans={nextPlans} />
+          {status !== requestPending(ActionTypes.GET_NEXT_PLANS) ? (
+            <TravelTable plans={nextPlans} />
+          ): (
+            <Loading />
+          )}
         </TableContainer>
       </Container>
     </>
@@ -48,6 +55,7 @@ const Dashboard = (props) => {
 
 const mapStateToProps = (state) => ({
   nextPlans: state.getIn(['plan', 'nextPlans']),
+  status: state.getIn(['plan', 'status']),
 });
 
 const mapDispatchToProps = {

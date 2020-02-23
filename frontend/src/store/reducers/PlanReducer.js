@@ -7,6 +7,11 @@ const initialState = fromJS({
   plans: [],
   nextPlans: [],
   plan: null,
+  filterParams: {
+    destination: '',
+    startDate: '',
+    endDate: '',
+  },
   status: 'INIT',
   error: null,
 });
@@ -122,6 +127,11 @@ export default (state = initialState, action) => {
     case requestPending(ActionTypes.GET_NEXT_PLANS):
       return state.merge({
         status: requestPending(ActionTypes.GET_NEXT_PLANS),
+      });
+
+    case ActionTypes.SET_FILTER_PARAMS:
+      return state.merge({
+        filterParams: fromJS(action.payload),
       });
     default:
       return state;

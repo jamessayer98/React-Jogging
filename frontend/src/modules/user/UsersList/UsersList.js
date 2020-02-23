@@ -66,62 +66,66 @@ const UsersList = (props) => {
     setPage(0);
   };
 
-  return status !== requestPending(ActionTypes.GET_USERS) ? (
+  return  (
     <>
       <Container maxWidth="lg">
         <TableContainer className={classes.root} component={Paper}>
           <TableToolbar title="All users" handleAction={handleAddUser} withAction />
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>#</TableCell>
-                <TableCell>Username</TableCell>
-                <TableCell>Email</TableCell>
-                <TableCell>Role</TableCell>
-                <TableCell>Actions</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {users
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((user, index) =>{
-                  const rawData = user.toJS();
-                  return (
-                    <TableRow key={rawData.id}>
-                      <TableCell component="th" scope="row">
-                        {index + 1}
-                      </TableCell>
-                      <TableCell>{rawData.username}</TableCell>
-                      <TableCell>{rawData.email}</TableCell>
-                      <TableCell className={classes.role}>{getRoleName(rawData.profile.role)}</TableCell>
-                      <TableCell>
-                        <IconButton aria-label="edit plan" onClick={() => handleEditUser(rawData.id)}>
-                          <EditIcon />
-                        </IconButton>
-                        <IconButton aria-label="delete plan" onClick={() => handleDeleteUser(rawData.id)}>
-                          <DeleteIcon />
-                        </IconButton>
-                      </TableCell>
-                    </TableRow>
-                  )
-                })
-              }
-            </TableBody>
-          </Table>
-          <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
-            component="div"
-            count={users.size}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onChangePage={handleChangePage}
-            onChangeRowsPerPage={handleChangeRowsPerPage}
-          />
+          {status !== requestPending(ActionTypes.GET_USERS) ? (
+            <>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>#</TableCell>
+                    <TableCell>Username</TableCell>
+                    <TableCell>Email</TableCell>
+                    <TableCell>Role</TableCell>
+                    <TableCell>Actions</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {users
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((user, index) =>{
+                      const rawData = user.toJS();
+                      return (
+                        <TableRow key={rawData.id}>
+                          <TableCell component="th" scope="row">
+                            {index + 1}
+                          </TableCell>
+                          <TableCell>{rawData.username}</TableCell>
+                          <TableCell>{rawData.email}</TableCell>
+                          <TableCell className={classes.role}>{getRoleName(rawData.profile.role)}</TableCell>
+                          <TableCell>
+                            <IconButton aria-label="edit plan" onClick={() => handleEditUser(rawData.id)}>
+                              <EditIcon />
+                            </IconButton>
+                            <IconButton aria-label="delete plan" onClick={() => handleDeleteUser(rawData.id)}>
+                              <DeleteIcon />
+                            </IconButton>
+                          </TableCell>
+                        </TableRow>
+                      )
+                    })
+                  }
+                </TableBody>
+              </Table>
+              <TablePagination
+                rowsPerPageOptions={[5, 10, 25]}
+                component="div"
+                count={users.size}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onChangePage={handleChangePage}
+                onChangeRowsPerPage={handleChangeRowsPerPage}
+              />
+            </>
+          ): (
+            <Loading />
+          )}
         </TableContainer>
       </Container>
     </>
-  ) : (
-    <Loading />
   );
 };
 

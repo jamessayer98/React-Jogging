@@ -8,6 +8,7 @@ export const ADD_PLAN = 'ADD_PLAN';
 export const UPDATE_PLAN = 'UPDATE_PLAN';
 export const DELETE_PLAN = 'DELETE_PLAN';
 export const GET_NEXT_PLANS = 'GET_NEXT_PLANS';
+export const SET_FILTER_PARAMS = 'SET_FILTER_PARAMS';
 
 export const GET_USERS = 'GET_USERS';
 export const GET_USER = 'GET_USER';
