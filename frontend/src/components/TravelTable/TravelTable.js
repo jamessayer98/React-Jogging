@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
@@ -34,6 +34,12 @@ export const TravelTable = (props) => {
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [page, setPage] = useState(0);
+
+  useEffect(() => {
+    if (plans.size % rowsPerPage === 0 && plans.size / rowsPerPage <= page) {
+      setPage(page - 1);
+    }
+  }, [plans]);
 
   const handleEditPlan = (id) => {
     history.push(`/plan/${id}`);

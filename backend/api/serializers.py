@@ -18,6 +18,15 @@ class SignupSerializer(serializers.ModelSerializer):
         fields = ['id', 'username', 'email', 'password', 'profile']
         extra_kwargs = {'password': {'write_only': True}}
 
+    def to_internal_value(self, data):
+        role = data.get('role', None)
+        parsed_data = super().to_internal_value(data)
+
+        if role is not None:
+            parsed_data['role'] = int(role)
+
+        return parsed_data
+
     def create(self, validated_data):
         user = User(
             email = validated_data['email'],
@@ -59,11 +68,6 @@ class UserSerializer(serializers.ModelSerializer):
         return instance
 
 class RecordSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Record
-        fields = ['id', 'destination', 'start_date', 'end_date', 'comment']
-
-class RecordWithUserSerializer(serializers.ModelSerializer):
     user = UserSerializer(required=False)
 
     class Meta:

@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from datetime import datetime
 
-from .serializers import SignupSerializer, UserSerializer, RecordSerializer, RecordWithUserSerializer
+from .serializers import SignupSerializer, UserSerializer, RecordSerializer
 from .permissions import IsUserManageAllowed
 from .models import Record, UserProfile
 
@@ -56,12 +56,8 @@ class UserViewSet(viewsets.ModelViewSet):
         return User.objects.filter(profile__role__lte=self.request.user.profile.role)
 
 class RecordViewSet(viewsets.ModelViewSet):
+    serializer_class = RecordSerializer
     permission_classes = [permissions.IsAuthenticated]
-
-    def get_serializer_class(self):
-        if self.request.user.profile.role == UserProfile.ADMINISTRATOR:
-            return RecordWithUserSerializer
-        return RecordSerializer
 
     def get_queryset(self):
         qs = Record.objects.all()
@@ -97,6 +93,6 @@ def NextMonthPlan(request):
         nextmonth = now.replace(year=now.year + 1, month=1)
  
     records = qs.filter(start_date__year=nextmonth.year, start_date__month=nextmonth.month).all()
-    serializer = RecordWithUserSerializer(records, many=True)
+    serializer = RecordSerializer(records, many=True)
 
     return Response(serializer.data)

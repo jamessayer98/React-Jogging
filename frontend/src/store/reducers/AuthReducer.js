@@ -45,6 +45,8 @@ export default (state = initialState, action) => {
         status: requestFail(ActionTypes.AUTH_SIGNUP),
         error: action.payload,
       });
+    case ActionTypes.AUTH_LOGOUT:
+      return fromJS(getInitialState());
     default:
       return state;
   }
